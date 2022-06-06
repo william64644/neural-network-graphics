@@ -66,7 +66,7 @@ struct Graphic_Neuron
     }
 };
 
-void draw_graphic_layer(sf::RenderWindow &window, vector<Graphic_Neuron> &layer)
+void draw_graphic_neurons(sf::RenderWindow &window, vector<Graphic_Neuron> &layer)
 {
     for (long unsigned int i = 0; i < layer.size(); i++)
     {
@@ -86,8 +86,6 @@ vector<Graphic_Neuron> generate_graphic_neurons(Layer &layer, sf::Font &font, do
     return graphic_neurons;
 }
 
-// get a graphicable neuron from a Layer
-
 int main()
 {
     sf::Font font;
@@ -101,7 +99,7 @@ int main()
     Layer layer2(4, 3);
     Layer layer3(3, 0);
 
-    vector<Graphic_Neuron> graphic_layer = generate_graphic_neurons(layer, font, 0, 0, 30);
+    vector<Graphic_Neuron> graphic_layer1 = generate_graphic_neurons(layer, font, 0, 0, 30);
     vector<Graphic_Neuron> graphic_layer2 = generate_graphic_neurons(layer2, font, 500, 0, 30);
     vector<Graphic_Neuron> graphic_layer3 = generate_graphic_neurons(layer3, font, 1000, 0, 30);
 
@@ -120,9 +118,9 @@ int main()
         window.clear(sf::Color::Black);
 
         // draw the layer
-        draw_graphic_layer(window, graphic_layer);
-        draw_graphic_layer(window, graphic_layer2);
-        draw_graphic_layer(window, graphic_layer3);
+        draw_graphic_neurons(window, graphic_layer1);
+        draw_graphic_neurons(window, graphic_layer2);
+        draw_graphic_neurons(window, graphic_layer3);
         window.display();
     }
 
