@@ -83,7 +83,7 @@ int main()
     Layer layer2(4, 3);
     Layer layer3(3, 0);
 
-	layer1.neurons = {1, 1, 1};
+	layer1.neurons = {1, 1, 1;
 
 	matrix_randomizer(layer1.weights);
 	matrix_randomizer(layer2.weights);
