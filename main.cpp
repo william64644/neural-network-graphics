@@ -44,15 +44,14 @@ struct Graphic_Neuron
 {
     sf::CircleShape shape;
     sf::Text text;
-    sf::Font font;
 
-    Graphic_Neuron(double x, double y, double radius, double value)
+    Graphic_Neuron(sf::Font &font, double x = 0, double y = 0, double radius = 0, double value = 0)
     {
+
         shape.setPosition(x, y);
         shape.setRadius(radius);
         shape.setFillColor(random_dark_color());
 
-        font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeSans.ttf");
         text.setFont(font);
 
         text.setFillColor(sf::Color::White);
@@ -67,33 +66,44 @@ struct Graphic_Neuron
     }
 };
 
-// get a graphicable neuron from a Layer
-Graphic_Neuron get_graphic_neuron(Layer &layer, unsigned int index, double x = 0, double y_spacing = 70, double radius = 30)
+void draw_graphic_layer(sf::RenderWindow &window, vector<Graphic_Neuron> &layer)
 {
-    double y = index * y_spacing;
-    return Graphic_Neuron(x, y, radius, layer.neurons[index]);
+    for (long unsigned int i = 0; i < layer.size(); i++)
+    {
+        window.draw(layer[i].shape);
+        window.draw(layer[i].text);
+    }
 }
+
+vector<Graphic_Neuron> generate_graphic_neurons(Layer &layer, sf::Font &font, double x = 0, double y = 0, double radius = 0)
+{
+    vector<Graphic_Neuron> graphic_neurons;
+    for (long unsigned int i = 0; i < layer.neurons.size(); i++)
+    {
+        graphic_neurons.push_back(Graphic_Neuron(font, x, y, radius, layer.neurons[i]));
+        y += radius * 2;
+    }
+    return graphic_neurons;
+}
+
+// get a graphicable neuron from a Layer
 
 int main()
 {
+    sf::Font font;
+    font.loadFromFile("/usr/share/fonts/truetype/freefont/FreeSans.ttf");
+
     // create the window
-    sf::RenderWindow window(sf::VideoMode(900, 500), "My window");
+    sf::RenderWindow window(sf::VideoMode(1400, 800), "My window");
 
     // create a Layer
     Layer layer(3, 4);
     Layer layer2(4, 3);
-    Layer layer3(3, 2);
+    Layer layer3(3, 0);
 
-    Graphic_Neuron g_neuron1 = get_graphic_neuron(layer, 0);
-    Graphic_Neuron g_neuron2 = get_graphic_neuron(layer, 1);
-    Graphic_Neuron g_neuron3 = get_graphic_neuron(layer, 2);
-
-    Graphic_Neuron g_neuron4 = get_graphic_neuron(layer2, 0.5, 200);
-    Graphic_Neuron g_neuron5 = get_graphic_neuron(layer2, 1.5, 200);
-
-    Graphic_Neuron g_neuron6 = get_graphic_neuron(layer3, 0, 400);
-    Graphic_Neuron g_neuron7 = get_graphic_neuron(layer3, 1, 400);
-    Graphic_Neuron g_neuron8 = get_graphic_neuron(layer3, 2, 400);
+    vector<Graphic_Neuron> graphic_layer = generate_graphic_neurons(layer, font, 0, 0, 30);
+    vector<Graphic_Neuron> graphic_layer2 = generate_graphic_neurons(layer2, font, 500, 0, 30);
+    vector<Graphic_Neuron> graphic_layer3 = generate_graphic_neurons(layer3, font, 1000, 0, 30);
 
     // run the program as long as the window is open
     while (window.isOpen())
@@ -109,31 +119,10 @@ int main()
 
         window.clear(sf::Color::Black);
 
-        // draw everything here...
-        window.draw(g_neuron1.shape);
-        window.draw(g_neuron1.text);
-
-        window.draw(g_neuron2.shape);
-        window.draw(g_neuron2.text);
-
-        window.draw(g_neuron3.shape);
-        window.draw(g_neuron3.text);
-
-        window.draw(g_neuron4.shape);
-        window.draw(g_neuron4.text);
-
-        window.draw(g_neuron5.shape);
-        window.draw(g_neuron5.text);
-
-        window.draw(g_neuron6.shape);
-        window.draw(g_neuron6.text);
-
-        window.draw(g_neuron7.shape);
-        window.draw(g_neuron7.text);
-
-        window.draw(g_neuron8.shape);
-        window.draw(g_neuron8.text);
-
+        // draw the layer
+        draw_graphic_layer(window, graphic_layer);
+        draw_graphic_layer(window, graphic_layer2);
+        draw_graphic_layer(window, graphic_layer3);
         window.display();
     }
 

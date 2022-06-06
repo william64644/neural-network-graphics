@@ -1,0 +1,5 @@
+Graphic_Neuron get_graphic_neuron(Layer &layer, unsigned int index, sf::Font &font, double x = 0, double y_spacing = 70, double radius = 30)
+{
+    double y = index * y_spacing;
+    return Graphic_Neuron(font, x, y, radius, layer.neurons[index]);
+}
